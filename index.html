@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘 뭐 먹지?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>오늘 뭐 먹지?</h1>
+      <p id="mealTimeLabel" class="subtitle"></p>
+    </header>
+
+    <section class="filter-row">
+      <label for="categorySelect">카테고리</label>
+      <select id="categorySelect">
+        <option value="전체">전체</option>
+      </select>
+    </section>
+
+    <section class="recommend-card" id="recommendCard" hidden>
+      <p class="menu-category" id="resultCategory"></p>
+      <h2 class="menu-name" id="resultName"></h2>
+      <div class="button-row">
+        <button id="eatButton" class="primary">이거 먹을래요</button>
+        <button id="rerollButton" class="secondary">다른 거 추천</button>
+      </div>
+    </section>
+
+    <button id="recommendButton" class="primary big">메뉴 추천받기</button>
+
+    <section class="history-section">
+      <div class="history-header">
+        <h3>최근 먹은 메뉴</h3>
+        <button id="clearHistoryButton" class="link">기록 초기화</button>
+      </div>
+      <ul id="historyList" class="history-list"></ul>
+      <p id="emptyHistory" class="empty-state">아직 먹은 기록이 없어요.</p>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
