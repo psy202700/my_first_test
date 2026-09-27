@@ -1,0 +1,17 @@
+{
+  "name": "handover-interview",
+  "version": "0.1.0",
+  "private": true,
+  "description": "업무 인수인계 인터뷰 AI 어시스턴트",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0"
+  }
+}

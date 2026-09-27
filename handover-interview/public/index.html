@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>인수인계 인터뷰</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>인수인계 인터뷰</h1>
+      <div class="topbar-actions">
+        <button id="new-session" type="button" class="ghost" hidden>새 인터뷰</button>
+        <button id="view-document" type="button" class="ghost" hidden>작성된 문서 보기</button>
+        <button id="make-document" type="button" hidden>인수인계서 생성</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="start-view" class="start-view">
+        <h2>인터뷰 시작하기</h2>
+        <p class="muted">
+          전임자와 대화하며 업무를 8개 영역으로 정리하고, 필요하면 관련 메일·메신저 자료를 받아
+          인수인계서를 만듭니다. 아래 항목은 비워 두어도 됩니다.
+        </p>
+        <form id="start-form">
+          <label>전임자 이름<input name="predecessor" autocomplete="off" /></label>
+          <label>인계 업무<input name="jobTitle" placeholder="예: 영업지원팀 정산 담당" autocomplete="off" /></label>
+          <label>후임자 이름<input name="successor" autocomplete="off" /></label>
+          <button type="submit">인터뷰 시작</button>
+        </form>
+        <p class="notice">
+          올려주신 자료는 인수인계서 작성을 위해 Claude API로 전송됩니다. 개인 메일함 전체가 아니라
+          해당 업무 관련 자료만 올려 주세요.
+        </p>
+      </section>
+
+      <section id="interview-view" class="interview-view" hidden>
+        <aside class="progress" aria-label="진행 상황">
+          <h2>진행 상황</h2>
+          <ol id="category-list"></ol>
+          <div class="slot-box">
+            <h3>현재 주제</h3>
+            <p id="current-topic" class="muted">-</p>
+            <ul id="slot-list"></ul>
+          </div>
+          <details class="facts-box">
+            <summary>정리된 내용 <span id="fact-count">0</span>건</summary>
+            <div id="fact-list"></div>
+          </details>
+        </aside>
+
+        <div class="chat">
+          <div id="messages" class="messages" aria-live="polite"></div>
+
+          <form id="composer" class="composer">
+            <div id="pending-attachments" class="pending-attachments"></div>
+            <div id="paste-box" class="paste-box" hidden>
+              <input id="paste-title" placeholder="자료 이름 (예: 3월 정산 메일, #영업지원 채널)" />
+              <textarea id="paste-text" rows="5" placeholder="메일 본문이나 메신저 대화를 붙여넣어 주세요."></textarea>
+              <div class="paste-actions">
+                <button type="button" id="paste-add">자료로 추가</button>
+                <button type="button" id="paste-cancel" class="ghost">취소</button>
+              </div>
+            </div>
+            <div class="composer-row">
+              <div class="attach-buttons">
+                <label class="icon-button" title="파일 첨부 (.eml .msg .pdf 이미지 텍스트)">
+                  파일
+                  <input id="file-input" type="file" multiple
+                    accept=".eml,.msg,.pdf,.png,.jpg,.jpeg,.gif,.webp,.txt,.md,.csv,.tsv,.json,.log,.html,.htm" hidden />
+                </label>
+                <button type="button" id="paste-toggle" class="icon-button" title="텍스트 붙여넣기">붙여넣기</button>
+              </div>
+              <textarea id="message-input" rows="2" placeholder="답변을 입력하세요 (Enter 전송, Shift+Enter 줄바꿈)"></textarea>
+              <button type="submit" id="send-button">보내기</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="document-view" class="document-view" hidden>
+        <div class="document-toolbar">
+          <button type="button" id="back-to-chat" class="ghost">인터뷰로 돌아가기</button>
+          <span id="document-status" class="muted"></span>
+          <button type="button" id="copy-document" class="ghost">복사</button>
+          <a id="download-document" class="button" download>.md 다운로드</a>
+        </div>
+        <article id="document-body" class="document-body"></article>
+      </section>
+    </main>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
