@@ -31,7 +31,10 @@ const fakeLlm = {
     return { content: [{ type: "text", text: JSON.stringify(output) }], output };
   },
   async streamDocument({ messages, onText }) {
-    assert.match(messages.at(-1).content, /인수인계서 작성 요청/);
+    const request = messages.at(-1).content;
+    assert.match(request, /인수인계서 작성 요청/);
+    assert.match(request, /제목의 \[부서명\]: "영업지원팀"/);
+    assert.match(request, /## \[부록\] AI 확인 필요 항목/, "uses the handover template file");
     onText("# 업무 인수인계서\n");
     onText("- 정산보고: 확인 필요\n");
     return "# 업무 인수인계서\n- 정산보고: 확인 필요\n";
@@ -62,10 +65,11 @@ const post = (url, body) =>
   fetch(base + url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
 
 test("full interview flow: open, answer with attachment, generate document", async () => {
-  const created = await (await post("/api/sessions", { meta: { predecessor: "김전임", jobTitle: "정산" } })).json();
+  const created = await (await post("/api/sessions", { meta: { department: "영업지원팀", predecessor: "김전임", jobTitle: "정산" } })).json();
   assert.equal(created.transcript.length, 1, "opening prompt is hidden, only the greeting shows");
   assert.equal(created.transcript[0].role, "assistant");
-  assert.match(calls[0].at(-1).content[0].text, /전임자: 김전임/);
+  assert.match(calls[0].at(-1).content[0].text, /부서: 영업지원팀\n전임자: 김전임/);
+  assert.equal(created.meta.department, "영업지원팀");
 
   const res = await post(`/api/sessions/${created.id}/turn`, {
     text: "보통 매달 정산보고를 재무팀에 보내요",

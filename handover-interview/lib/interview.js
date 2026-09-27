@@ -57,6 +57,7 @@ export function publicView(session) {
 function cleanMeta(meta = {}) {
   const field = (value) => String(value ?? "").trim().slice(0, 200);
   return {
+    department: field(meta.department),
     predecessor: field(meta.predecessor),
     jobTitle: field(meta.jobTitle),
     successor: field(meta.successor),
